@@ -1,5 +1,7 @@
 package tdd.demo;
 
+import java.net.URI;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,5 +30,25 @@ public class 상품_등록_API {
 
         // Assert
         assertThat(response.getStatusCode().value()).isEqualTo(201);
+    }
+
+    @Test
+    void 요청이_성공하면_Location_헤더를_반환한다(
+        @Autowired TestRestTemplate client
+    ) {
+        // Arrange
+        var command = new CreateProductCommand("키보드", 10000, 100);
+
+        // Act
+        ResponseEntity<Void> response = client.postForEntity(
+            "/api/products",
+            command,
+            Void.class
+        );
+
+        // Assert
+        URI location = response.getHeaders().getLocation();
+        assertThat(location).isNotNull();
+        assertThat(location.getPath()).startsWith("/api/products/");
     }
 }

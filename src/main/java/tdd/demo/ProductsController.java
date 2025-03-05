@@ -1,5 +1,7 @@
 package tdd.demo;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ public class ProductsController {
 
     @PostMapping("/api/products")
     ResponseEntity<?> createProduct() {
-        return ResponseEntity.created(null).build();
+        URI location = URI.create("/api/products/1");
+        return ResponseEntity.created(location).build();
     }
 }
