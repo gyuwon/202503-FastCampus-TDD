@@ -3,6 +3,7 @@ package tdd.demo;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,5 +17,10 @@ public class ProductsController {
     ResponseEntity<?> createProduct() {
         URI location = URI.create("/api/products/1");
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/api/products/{id}")
+    ResponseEntity<?> findProduct() {
+        return ResponseEntity.ok().build();
     }
 }
