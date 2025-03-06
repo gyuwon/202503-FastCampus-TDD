@@ -51,4 +51,27 @@ public class 상품_조회_API {
         // Assert
         assertThat(response.getStatusCode().value()).isEqualTo(404);
     }
+
+    @Test
+    void 요청이_성공하면_상품_정보를_반환한다(
+        @Autowired TestRestTemplate client
+    ) {
+        // Arrange
+        URI location = client.postForEntity(
+            "/api/products",
+            new CreateProductCommand("키보드", 10000, 100),
+            Void.class
+        ).getHeaders().getLocation();
+
+        // Act
+        Product product = client.getForObject(
+            location,
+            Product.class
+        );
+
+        // Assert
+        assertThat(product.getName()).isEqualTo("키보드");
+        assertThat(product.getPriceAmount()).isEqualTo(10000);
+        assertThat(product.getStockQuantity()).isEqualTo(100);
+    }
 }
